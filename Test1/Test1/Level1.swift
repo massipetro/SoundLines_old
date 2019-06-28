@@ -19,13 +19,6 @@ class Level1: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /*let oscillator = AKOscillator()
-        oscillator.amplitude = 0.1
-        AudioKit.output = oscillator
-        
-        try! AudioKit.start()
-        oscillator.start()*/
-        
         AudioKit.output = AKMixer(oscillator, oscillator2)
         try! AudioKit.start()
         
@@ -43,15 +36,15 @@ class Level1: UIViewController {
         // it is located between the first element and the second element
         // it has the same heigth as the element
         
-        let firstElementMaxX = label1.frame.maxX
-        let secondElementMinX = label2.frame.minX - 15
+        let firstElementMaxX = label1.frame.maxX + 10
+        let secondElementMinX = label2.frame.minX - 10
         
         let shapeWidth: CGFloat = secondElementMinX - firstElementMaxX
         let shapeHeight: CGFloat = label1.frame.height
         
         // Creates an accessibile rectangle shape
         
-        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX + 10,
+        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX,
                                               y: self.view.frame.size.height / 2 - shapeHeight / 2,
                                               width: shapeWidth,
                                               height: shapeHeight))
@@ -61,6 +54,7 @@ class Level1: UIViewController {
         
         self.view.addSubview(firstLevelShape)
     }
+    
     
     // Detects panning and prints OK if the user touches inside the shape
     
@@ -83,18 +77,20 @@ class Level1: UIViewController {
             
             if (firstLevelRect.contains(initialPoint)) {
                 print("OK: point is inside shape")
-                if oscillator.isPlaying {
-                    oscillator.stop()
-                    
-                } else {
-                    oscillator.amplitude = random(0.5, 1)
-                    oscillator.frequency = random(220, 880)
-                    oscillator.start()
-                }
+                
+                oscillator2.stop()
+                oscillator.amplitude = 0.5
+                oscillator.frequency = Double(initialPoint.x)
+                oscillator.start()
+            
             } else {
                 print("NO: point is outside shape")
                 oscillator.stop()
+                oscillator2.amplitude = 0.5
+                oscillator2.frequency = 200
+                oscillator2.start()
             }
         }
     }
+    
 }
