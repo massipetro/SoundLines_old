@@ -82,7 +82,7 @@ class Level1: UIViewController {
                 oscillator.amplitude = 0.5
                 oscillator.frequency = Double(initialPoint.x)
                 oscillator.start()
-            
+                
             } else {
                 print("NO: point is outside shape")
                 oscillator.stop()
