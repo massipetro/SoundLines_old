@@ -19,13 +19,6 @@ class Level1: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /*let oscillator = AKOscillator()
-        oscillator.amplitude = 0.1
-        AudioKit.output = oscillator
-        
-        try! AudioKit.start()
-        oscillator.start()*/
-        
         AudioKit.output = AKMixer(oscillator, oscillator2)
         try! AudioKit.start()
         
@@ -85,7 +78,6 @@ class Level1: UIViewController {
                 print("OK: point is inside shape")
                 if oscillator.isPlaying {
                     oscillator.stop()
-                    
                 } else {
                     oscillator.amplitude = random(0.5, 1)
                     oscillator.frequency = random(220, 880)
