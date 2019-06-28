@@ -47,7 +47,7 @@ class Level1: UIViewController {
         firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX + 10,
                                               y: self.view.frame.size.height / 2 - shapeHeight / 2,
                                               width: shapeWidth,
-                                              height: shapeHeight))
+                                              height: 75))
         
         firstLevelShape.isAccessibilityElement = true
         firstLevelShape.accessibilityHint = "shape"
@@ -78,8 +78,8 @@ class Level1: UIViewController {
                 print("OK: point is inside shape")
                 
                 oscillator2.stop()
+                oscillator.frequency = Double(initialPoint.x) + Double(initialPoint.y)
                 oscillator.amplitude = 0.5
-                oscillator.frequency = Double(initialPoint.x)
                 oscillator.start()
                 
             } else {
