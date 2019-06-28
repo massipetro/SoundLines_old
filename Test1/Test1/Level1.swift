@@ -13,6 +13,8 @@ import AudioKit
 
 class Level1: UIViewController {
     
+    // AudioKit setup and start
+    
     var oscillator = AKOscillator()
     var oscillator2 = AKOscillator()
     
@@ -20,6 +22,11 @@ class Level1: UIViewController {
         super.viewDidLoad()
         
         AudioKit.output = AKMixer(oscillator, oscillator2)
+        
+        // Audio is played with silent mode as well
+        
+        AKSettings.playbackWhileMuted = true
+        
         try! AudioKit.start()
         
     }
