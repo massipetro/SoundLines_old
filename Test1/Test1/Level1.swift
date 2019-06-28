@@ -76,16 +76,17 @@ class Level1: UIViewController {
             
             if (firstLevelRect.contains(initialPoint)) {
                 print("OK: point is inside shape")
-                if oscillator.isPlaying {
-                    oscillator.stop()
-                } else {
-                    oscillator.amplitude = random(0.5, 1)
-                    oscillator.frequency = random(220, 880)
-                    oscillator.start()
-                }
+                oscillator2.stop()
+                oscillator.amplitude = 0.5
+                oscillator.frequency = Double(initialPoint.x)
+                oscillator.start()
+                
             } else {
                 print("NO: point is outside shape")
                 oscillator.stop()
+                oscillator2.amplitude = 0.5
+                oscillator2.frequency = 200
+                oscillator2.start()
             }
         }
     }
