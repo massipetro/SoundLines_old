@@ -15,13 +15,14 @@ class Level1: UIViewController {
     
     // AudioKit setup and start
     
-    var oscillator = AKOscillator()
+    var oscillator = AKFMOscillator()
+    var oscillatorMid = AKFMOscillator()
     var oscillator2 = AKOscillator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AudioKit.output = AKMixer(oscillator, oscillator2)
+        AudioKit.output = AKMixer(oscillator, oscillatorMid,oscillator2)
         
         // Audio is played with silent mode as well
         
@@ -76,7 +77,7 @@ class Level1: UIViewController {
         // Update the position for the .began, .changed, and .ended states
         
         if gestureRecognizer.state != .cancelled {
-            print(initialPoint)
+            //print(initialPoint)
             
             let firstLevelRect = firstLevelShape.getCGRect()
             
@@ -85,14 +86,26 @@ class Level1: UIViewController {
             if (firstLevelRect.contains(initialPoint)) {
                 print("OK: point is inside shape")
                 
+                let middleLine = 0.0..<452.0
+                
+                oscillatorMid.stop()
                 oscillator2.stop()
-                oscillator.frequency = Double(initialPoint.x) + Double(initialPoint.y)
-                oscillator.amplitude = 0.5
+                oscillator.baseFrequency = Double(initialPoint.y)
+                oscillator.amplitude = 1
                 oscillator.start()
+                
+                if(middleLine.contains(Double(initialPoint.x))) {
+                    print("YES NIGGA")
+                    oscillator.stop()
+                    oscillator2.stop()
+                    oscillatorMid.baseFrequency = 500
+                    oscillatorMid.start()
+                }
                 
             } else {
                 print("NO: point is outside shape")
                 
+                oscillatorMid.stop()
                 oscillator.stop()
                 oscillator2.amplitude = 0.5
                 oscillator2.frequency = 200
