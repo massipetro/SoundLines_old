@@ -77,7 +77,7 @@ class Level1: UIViewController {
         // Update the position for the .began, .changed, and .ended states
         
         if gestureRecognizer.state != .cancelled {
-            //print(initialPoint)
+            print(initialPoint)
             
             let firstLevelRect = firstLevelShape.getCGRect()
             
@@ -85,22 +85,23 @@ class Level1: UIViewController {
             
             if (firstLevelRect.contains(initialPoint)) {
                 print("OK: point is inside shape")
-                
-                let middleLine = 0.0..<452.0
-                
+                                
                 oscillatorMid.stop()
                 oscillator2.stop()
                 oscillator.baseFrequency = Double(initialPoint.y)
                 oscillator.amplitude = 1
                 oscillator.start()
                 
-                if(middleLine.contains(Double(initialPoint.x))) {
-                    print("YES NIGGA")
-                    oscillator.stop()
-                    oscillator2.stop()
-                    oscillatorMid.baseFrequency = 500
-                    oscillatorMid.start()
+                for m in stride(from: 0.0, to: 452.0, by: 1) {
+                    if(m == Double(initialPoint.x) && 216 == initialPoint.y) {
+                        print("YES NIGGA")
+                        oscillator.stop()
+                        oscillator2.stop()
+                        oscillatorMid.baseFrequency = 500
+                        oscillatorMid.start()
+                    }
                 }
+                
                 
             } else {
                 print("NO: point is outside shape")
