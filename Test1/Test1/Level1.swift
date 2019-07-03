@@ -85,22 +85,25 @@ class Level1: UIViewController {
             
             if (firstLevelRect.contains(initialPoint)) {
                 print("OK: point is inside shape")
-                                
+                
                 oscillatorMid.stop()
                 oscillator2.stop()
                 oscillator.baseFrequency = Double(initialPoint.y)
                 oscillator.amplitude = 1
                 oscillator.start()
                 
-                for m in stride(from: 0.0, to: 452.0, by: 1) {
-                    if(m == Double(initialPoint.x) && 216 == initialPoint.y) {
+                let middleLineX = 0.0..<500.0
+                let middleLineY = 214.0..<219.0
+                
+                //for m in stride(from: 0.0, to: 452.0, by: 1) {
+                    if(middleLineX.contains(Double(initialPoint.x)) && middleLineY.contains(Double(initialPoint.y))) {
                         print("YES NIGGA")
                         oscillator.stop()
                         oscillator2.stop()
                         oscillatorMid.baseFrequency = 500
                         oscillatorMid.start()
                     }
-                }
+                //}
                 
                 
             } else {
