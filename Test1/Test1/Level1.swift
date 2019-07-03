@@ -13,6 +13,8 @@ import AudioKit
 
 class Level1: UIViewController {
     
+    // AudioKit setup and start
+    
     var oscillator = AKOscillator()
     var oscillator2 = AKOscillator()
     
@@ -20,6 +22,11 @@ class Level1: UIViewController {
         super.viewDidLoad()
         
         AudioKit.output = AKMixer(oscillator, oscillator2)
+        
+        // Audio is played with silent mode as well
+        
+        AKSettings.playbackWhileMuted = true
+        
         try! AudioKit.start()
         
     }
@@ -47,7 +54,7 @@ class Level1: UIViewController {
         firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX,
                                               y: self.view.frame.size.height / 2 - shapeHeight / 2,
                                               width: shapeWidth,
-                                              height: shapeHeight))
+                                              height: 75))
         
         firstLevelShape.isAccessibilityElement = true
         firstLevelShape.accessibilityHint = "shape"
@@ -79,8 +86,8 @@ class Level1: UIViewController {
                 print("OK: point is inside shape")
                 
                 oscillator2.stop()
+                oscillator.frequency = Double(initialPoint.x) + Double(initialPoint.y)
                 oscillator.amplitude = 0.5
-                oscillator.frequency = Double(initialPoint.x)
                 oscillator.start()
                 
             } else {
