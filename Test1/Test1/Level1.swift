@@ -97,11 +97,14 @@ class Level1: UIViewController {
                 oscillator.amplitude = 1
                 oscillator.start()
                 
-                let middleLineX = 0.0..<500.0
-                let middleLineY = 214.0..<219.0
+                let y = self.view.frame.size.height / 2 - label1.frame.height / 2 - 25 + 37.5
+                let minY = y - 5
+                let maxY = y + 5
                 
+                let middleLineX = label1.frame.maxX + 10..<label2.frame.minX - 10
+                let middleLineY = minY..<maxY
      
-                if(middleLineX.contains(Double(initialPoint.x)) && middleLineY.contains(Double(initialPoint.y))) {
+                if(middleLineX.contains(initialPoint.x) && middleLineY.contains(initialPoint.y)) {
                     print("Inside the middle line")
                     oscillator.stop()
                     oscillator2.stop()
@@ -110,9 +113,7 @@ class Level1: UIViewController {
                     
                     oscillatorMid.baseFrequency = 500
                     oscillatorMid.start()
-                }
-                
-                
+                } else {panner.pan = 0.0}
                 
             } else {
                 print("NO: point is outside shape")
@@ -127,6 +128,8 @@ class Level1: UIViewController {
     }
     
     func normalize(num: Double) -> Double {
-        return 2*((num - 0)/(500.0))-1
+        let min = Double(label1.frame.maxX + 10)
+        let max = Double(label2.frame.minX - 10)
+        return 2*((num - min)/(max - min))-1
     }
 }
