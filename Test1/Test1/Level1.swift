@@ -23,6 +23,13 @@ class Level1: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Forces landscape orientation
+        
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        
+        // Creates AudioKit mixer and panner
+        
         let mixer = AKMixer(oscillator, oscillatorMid,oscillator2)
         
         panner = AKPanner(mixer, pan: 0.0)
@@ -35,6 +42,16 @@ class Level1: UIViewController {
         
         try! AudioKit.start()
         
+    }
+
+    // Forces landscape orientation
+
+    override var shouldAutorotate: Bool {
+        return true
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscapeLeft
     }
     
     @IBOutlet weak var label1: UILabel!
@@ -150,5 +167,37 @@ class Level1: UIViewController {
         let min = Double(label1.frame.maxX + 10)
         let max = Double(label2.frame.minX - 10)
         return 2*((num - min)/(max - min))-1
+    }
+}
+
+// Forces landscape orientation
+
+extension UINavigationController {
+    
+    override open var shouldAutorotate: Bool {
+        get {
+            if let visibleVC = visibleViewController {
+                return visibleVC.shouldAutorotate
+            }
+            return super.shouldAutorotate
+        }
+    }
+    
+    override open var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation{
+        get {
+            if let visibleVC = visibleViewController {
+                return visibleVC.preferredInterfaceOrientationForPresentation
+            }
+            return super.preferredInterfaceOrientationForPresentation
+        }
+    }
+    
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask{
+        get {
+            if let visibleVC = visibleViewController {
+                return visibleVC.supportedInterfaceOrientations
+            }
+            return super.supportedInterfaceOrientations
+        }
     }
 }

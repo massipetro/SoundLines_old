@@ -26,10 +26,10 @@
             </objects>
             <point key="canvasLocation" x="-976" y="-370"/>
         </scene>
-        <!--View Controller-->
+        <!--Open Screen-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Test1" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="OpenScreen" customModule="Test1" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -52,10 +52,10 @@
             </objects>
             <point key="canvasLocation" x="-93" y="-370"/>
         </scene>
-        <!--View Controller-->
+        <!--Introduction Screen-->
         <scene sceneID="y2R-ve-jEQ">
             <objects>
-                <viewController id="BeI-sM-HcF" sceneMemberID="viewController">
+                <viewController id="BeI-sM-HcF" customClass="IntroductionScreen" customModule="Test1" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vdp-TD-I80">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
