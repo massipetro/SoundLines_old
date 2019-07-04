@@ -18,11 +18,16 @@ class Level1: UIViewController {
     var oscillator = AKFMOscillator()
     var oscillatorMid = AKFMOscillator()
     var oscillator2 = AKOscillator()
+    var panner = AKPanner()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AudioKit.output = AKMixer(oscillator, oscillatorMid,oscillator2)
+        let mixer = AKMixer(oscillator, oscillatorMid,oscillator2)
+        
+        panner = AKPanner(mixer, pan: 0.0)
+        
+        AudioKit.output = panner
         
         // Audio is played with silent mode as well
         
@@ -53,7 +58,7 @@ class Level1: UIViewController {
         // Creates an accessibile rectangle shape
         
         firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX,
-                                              y: self.view.frame.size.height / 2 - shapeHeight / 2,
+                                              y: self.view.frame.size.height / 2 - shapeHeight / 2 - 25,
                                               width: shapeWidth,
                                               height: 75))
         
@@ -95,15 +100,18 @@ class Level1: UIViewController {
                 let middleLineX = 0.0..<500.0
                 let middleLineY = 214.0..<219.0
                 
-                //for m in stride(from: 0.0, to: 452.0, by: 1) {
-                    if(middleLineX.contains(Double(initialPoint.x)) && middleLineY.contains(Double(initialPoint.y))) {
-                        print("YES NIGGA")
-                        oscillator.stop()
-                        oscillator2.stop()
-                        oscillatorMid.baseFrequency = 500
-                        oscillatorMid.start()
-                    }
-                //}
+     
+                if(middleLineX.contains(Double(initialPoint.x)) && middleLineY.contains(Double(initialPoint.y))) {
+                    print("Inside the middle line")
+                    oscillator.stop()
+                    oscillator2.stop()
+
+                    panner.pan = normalize(num: Double(initialPoint.x))
+                    
+                    oscillatorMid.baseFrequency = 500
+                    oscillatorMid.start()
+                }
+                
                 
                 
             } else {
@@ -118,4 +126,7 @@ class Level1: UIViewController {
         }
     }
     
+    func normalize(num: Double) -> Double {
+        return 2*((num - 0)/(500.0))-1
+    }
 }
