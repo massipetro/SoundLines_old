@@ -37,16 +37,81 @@ class Level1: UIViewController {
         
         try! AudioKit.start()
         
+        // Hides the second label
+        
+        label2.isHidden = true
+        
     }
     
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
     
     var firstLevelShape: Shape!
+    var firstElementFound: Bool = false
+    var secondElementFound: Bool = false
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Game logic: find the first element, find the second element
+        // When both are found create the line
+        // If the second element has been reached, go to the next level
+        
+        // Adds tap gesture recognizer on the first element
+        
+        let tapped1 = UITapGestureRecognizer(target: self, action: #selector(firstElementSelected))
+        label1.isUserInteractionEnabled = true
+        label1.addGestureRecognizer(tapped1)
+        
+        // Adds tap gesture recognizer on the second element
+        
+        let tapped2 = UITapGestureRecognizer(target: self, action: #selector(secondElementSelected))
+        label2.isUserInteractionEnabled = true
+        label2.addGestureRecognizer(tapped2)
+        
+        // Tell the user to find the first element
+        
+        UIAccessibility.post(notification: .announcement, argument: "Find the kitten")
+    }
+    
+    // Detects tapping on the first element
+    // If tapped show second element and tell the user to find it
+    
+    @objc func firstElementSelected(sender: UITapGestureRecognizer) {
+        print("firstElementSelected")
+        
+        // Tell the user the first element has been found
+        
+        UIAccessibility.post(notification: .announcement, argument: "You found the kitten!")
+        
+        // Show the second element
+        
+        label2.isHidden = false
+        
+        // Tell the user to find the second element
+        
+        UIAccessibility.post(notification: .announcement, argument: "Find the cat")
+    }
+    
+    // Detects tapping on the second element
+    
+    @objc func secondElementSelected(sender: UITapGestureRecognizer) {
+        print("secondElementSelected")
+        
+        // Tell the user the second element has been found
+        
+        UIAccessibility.post(notification: .announcement, argument: "You found the cat!")
+        
+        // Create the line
+        
+        createLine()
+        
+        // Tell the user to connect the two elements
+        
+        UIAccessibility.post(notification: .announcement, argument: "Now go back to the kitten and follow the line to connect it to the cat")
+    }
+    
+    func createLine() -> Void {
         // Sets the line location and dimension:
         // it is located between the first element and the second element
         // it has the same heigth as the element
@@ -69,7 +134,6 @@ class Level1: UIViewController {
         
         self.view.addSubview(firstLevelShape)
     }
-    
     
     // Detects panning and prints OK if the user touches inside the shape
     
