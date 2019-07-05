@@ -12,6 +12,8 @@ class IntroductionScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.setHidesBackButton(true, animated:true);
 
         // Forces landscape orientation
         
