@@ -12,7 +12,14 @@ class OpenScreen: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        UIAccessibility.post(notification: .announcement, argument: "SoundLines: help a kitten play with its cat friend!  Press play to continue.")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            UIAccessibility.post(notification: .announcement, argument: "SoundLines: help a kitten play with its cat friend!  Press play to continue.")
+        })
+
     }
 }

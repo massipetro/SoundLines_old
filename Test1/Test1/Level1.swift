@@ -71,7 +71,10 @@ class Level1: UIViewController {
         
         // Tell the user to find the first element
         
-        UIAccessibility.post(notification: .announcement, argument: "Find the kitten")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+            UIAccessibility.post(notification: .announcement, argument: "Find the kitten")
+        })
+
     }
     
     // Detects tapping on the first element
@@ -82,15 +85,11 @@ class Level1: UIViewController {
         
         // Tell the user the first element has been found
         
-        UIAccessibility.post(notification: .announcement, argument: "You found the kitten!")
+        UIAccessibility.post(notification: .announcement, argument: "You found the kitten! Find the cat")
         
         // Show the second element
         
         label2.isHidden = false
-        
-        // Tell the user to find the second element
-        
-        UIAccessibility.post(notification: .announcement, argument: "Find the cat")
     }
     
     // Detects tapping on the second element
@@ -100,15 +99,11 @@ class Level1: UIViewController {
         
         // Tell the user the second element has been found
         
-        UIAccessibility.post(notification: .announcement, argument: "You found the cat!")
+        UIAccessibility.post(notification: .announcement, argument: "You found the cat! Now go back to the kitten and follow the line to connect it to the cat")
         
         // Create the line
         
         createLine()
-        
-        // Tell the user to connect the two elements
-        
-        UIAccessibility.post(notification: .announcement, argument: "Now go back to the kitten and follow the line to connect it to the cat")
     }
     
     func createLine() -> Void {
