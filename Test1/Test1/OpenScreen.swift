@@ -15,8 +15,8 @@ class OpenScreen: UIViewController {
         
         // Forces landscape orientation
 
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+        //let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        //UIDevice.current.setValue(value, forKey: "orientation")
         
         // Reads label if VoiceOver is activated
         
@@ -24,11 +24,11 @@ class OpenScreen: UIViewController {
         
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    /*override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeLeft
     }
     
     override var shouldAutorotate: Bool {
         return true
-    }
+    }*/
 }

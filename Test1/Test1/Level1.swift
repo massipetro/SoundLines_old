@@ -25,8 +25,8 @@ class Level1: UIViewController {
         
         // Forces landscape orientation
         
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+        /*let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")*/
         
         // Creates AudioKit mixer and panner
         
@@ -46,13 +46,13 @@ class Level1: UIViewController {
 
     // Forces landscape orientation
 
-    override var shouldAutorotate: Bool {
+    /*override var shouldAutorotate: Bool {
         return true
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeLeft
-    }
+    }*/
     
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
@@ -172,7 +172,7 @@ class Level1: UIViewController {
 
 // Forces landscape orientation
 
-extension UINavigationController {
+/*extension UINavigationController {
     
     override open var shouldAutorotate: Bool {
         get {
@@ -200,4 +200,4 @@ extension UINavigationController {
             return super.supportedInterfaceOrientations
         }
     }
-}
+}*/

@@ -15,8 +15,8 @@ class IntroductionScreen: UIViewController {
 
         // Forces landscape orientation
         
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+        /*let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")*/
         
         // Reads label if VoiceOver is activated
         
@@ -24,7 +24,7 @@ class IntroductionScreen: UIViewController {
 
     }
     
-    override var shouldAutorotate: Bool {
+    /*override var shouldAutorotate: Bool {
         return false
-    }
+    }*/
 }
