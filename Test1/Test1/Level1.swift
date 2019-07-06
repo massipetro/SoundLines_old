@@ -74,36 +74,59 @@ class Level1: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             UIAccessibility.post(notification: .announcement, argument: "Find the kitten")
         })
-
     }
     
     // Detects tapping on the first element
     // If tapped show second element and tell the user to find it
     
+    var firstElementTapCounter: Int = 0
+    
     @objc func firstElementSelected(sender: UITapGestureRecognizer) {
+
+        firstElementTapCounter = firstElementTapCounter + 1
+        
         print("firstElementSelected")
+        print("tapCounter: ", firstElementTapCounter)
         
-        // Tell the user the first element has been found
+        // If it is the first time finding the first element tell the user it has been found
+        // and show the second element
+        // else tell the user it is the first element
         
-        UIAccessibility.post(notification: .announcement, argument: "You found the kitten! Find the cat")
-        
-        // Show the second element
-        
-        label2.isHidden = false
+        if (firstElementTapCounter == 1) {
+            UIAccessibility.post(notification: .announcement, argument: "You found the kitten! Find the cat")
+            
+            // Show the second element
+            
+            label2.isHidden = false
+        } else {
+            UIAccessibility.post(notification: .announcement, argument: "Kitten")
+        }
     }
     
     // Detects tapping on the second element
     
+    var secondElementTapCounter: Int = 0
+    
     @objc func secondElementSelected(sender: UITapGestureRecognizer) {
+        secondElementTapCounter = secondElementTapCounter + 1
+
         print("secondElementSelected")
+        print("tapCounter: ", secondElementTapCounter)
         
-        // Tell the user the second element has been found
+        // If it is the first time finding the second element tell the user it has been found
+        // and create the line
+        // else tell the user it is the second element
         
-        UIAccessibility.post(notification: .announcement, argument: "You found the cat! Now go back to the kitten and follow the line to connect it to the cat")
-        
-        // Create the line
-        
-        createLine()
+        if (firstElementTapCounter == 1) {
+            UIAccessibility.post(notification: .announcement, argument: "You found the cat! Now go back to the kitten and follow the line to connect it to the cat")
+            
+            // Create the line
+            
+            createLine()
+        } else {
+            UIAccessibility.post(notification: .announcement, argument: "Cat")
+        }
+    
     }
     
     func createLine() -> Void {
