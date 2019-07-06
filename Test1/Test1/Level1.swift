@@ -47,6 +47,9 @@ class Level1: UIViewController {
     @IBOutlet weak var label2: UILabel!
     
     var firstLevelShape: Shape!
+    
+    var gameCanStart: Bool = false
+    
     var firstElementFound: Bool = false
     var secondElementFound: Bool = false
     
@@ -78,15 +81,24 @@ class Level1: UIViewController {
     
     // Detects tapping on the first element
     // If tapped show second element and tell the user to find it
+    // If the gameCanStart variable is true starts the panning detection
     
-    var firstElementTapCounter: Int = 0
+    var firstElementTapCounter: Int = 0 {
+        didSet {
+            if (gameCanStart) {
+                gameCanStart = false
+                firstElementFound = true
+                startGame()
+            }
+        }
+    }
     
     @objc func firstElementSelected(sender: UITapGestureRecognizer) {
 
         firstElementTapCounter = firstElementTapCounter + 1
         
         print("firstElementSelected")
-        print("tapCounter: ", firstElementTapCounter)
+        print("firstElementTapCounter: ", firstElementTapCounter)
         
         // If it is the first time finding the first element tell the user it has been found
         // and show the second element
@@ -105,34 +117,46 @@ class Level1: UIViewController {
     
     // Detects tapping on the second element
     
-    var secondElementTapCounter: Int = 0
+    var secondElementTapCounter: Int = 0{
+        didSet {
+            if (firstElementFound) {
+                print("Livello superato")
+            }
+        }
+    }
     
     @objc func secondElementSelected(sender: UITapGestureRecognizer) {
         secondElementTapCounter = secondElementTapCounter + 1
 
         print("secondElementSelected")
-        print("tapCounter: ", secondElementTapCounter)
+        print("secondElementTapCounter: ", secondElementTapCounter)
         
         // If it is the first time finding the second element tell the user it has been found
         // and create the line
         // else tell the user it is the second element
         
-        if (firstElementTapCounter == 1) {
+        if (secondElementTapCounter == 1) {
             UIAccessibility.post(notification: .announcement, argument: "You found the cat! Now go back to the kitten and follow the line to connect it to the cat")
             
             // Create the line
             
             createLine()
+            
+            // IMPORTANT: sets the start game variable true: now the didSet method for the firstElement
+            // will start the game
+            
+            gameCanStart = true
         } else {
             UIAccessibility.post(notification: .announcement, argument: "Cat")
         }
     
     }
     
+    // Sets the line location and dimension:
+    // it is located between the first element and the second element
+    // it has the same heigth as the element
+    
     func createLine() -> Void {
-        // Sets the line location and dimension:
-        // it is located between the first element and the second element
-        // it has the same heigth as the element
         
         let firstElementMaxX = label1.frame.maxX + 10
         let secondElementMinX = label2.frame.minX - 10
@@ -153,9 +177,26 @@ class Level1: UIViewController {
         self.view.addSubview(firstLevelShape)
     }
     
-    // Detects panning and prints OK if the user touches inside the shape
+    // Start the game: the user has to connect the two elements following the line
+    
+    func startGame() -> Void {
+        print("startGame")
+        
+        // Tell the user to follow the line
+        
+        UIAccessibility.post(notification: .announcement, argument: "Follow the line")
+        
+        // Adds panning gesture recognizer on the shape
+        
+        let panning = UIPanGestureRecognizer(target: self, action: #selector(panDetector(_:)))
+        firstLevelShape.isUserInteractionEnabled = true
+        firstLevelShape.addGestureRecognizer(panning)
+    }
+    
+    // Detects panning on the shape and adds sonification based on the finger position
     
     @IBAction func panDetector(_ gestureRecognizer: UIPanGestureRecognizer) {
+        print("panDetector")
         
         // Saves the point touched by the user
         
@@ -210,11 +251,9 @@ class Level1: UIViewController {
                     oscillatorMid.start()
                 } else {
                     panner.pan = 0.0
-                    
                 }
                 
             } else {
-                
                 // 3. Outside the line
                 
                 print("NO: point is outside shape")
