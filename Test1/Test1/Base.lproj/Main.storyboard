@@ -130,9 +130,6 @@
                             <constraint firstItem="5Cc-j6-g6m" firstAttribute="leading" secondItem="Eju-E0-VC0" secondAttribute="leading" constant="42" id="pjo-FO-06h"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Eju-E0-VC0"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="aaf-I2-V94" appends="YES" id="QeT-q9-IYa"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="label1" destination="5Cc-j6-g6m" id="cYR-eS-SMq"/>
@@ -140,11 +137,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sI0-CR-DAL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="aaf-I2-V94">
-                    <connections>
-                        <action selector="panDetector:" destination="U9f-C4-f8l" id="zGv-wQ-Pd6"/>
-                    </connections>
-                </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="aaf-I2-V94"/>
             </objects>
             <point key="canvasLocation" x="-93.103448275862078" y="1189.5999999999999"/>
         </scene>

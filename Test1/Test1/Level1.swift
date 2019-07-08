@@ -156,15 +156,15 @@ class Level1: UIViewController {
     
     func createLine() -> Void {
         
-        let firstElementMaxX = label1.frame.maxX + 10
-        let secondElementMinX = label2.frame.minX - 10
+        let firstElementMaxX = label1.frame.maxX
+        let secondElementMinX = label2.frame.minX
         
-        let shapeWidth: CGFloat = secondElementMinX - firstElementMaxX
+        let shapeWidth: CGFloat = (secondElementMinX - 10) - (firstElementMaxX + 10)
         let shapeHeight: CGFloat = label1.frame.height
         
         // Creates an accessibile rectangle shape
         
-        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX,
+        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX + 10,
                                               y: self.view.frame.size.height / 2 - shapeHeight / 2 - 25,
                                               width: shapeWidth,
                                               height: 75))
@@ -208,6 +208,9 @@ class Level1: UIViewController {
             print(initialPoint)
             
             if gameStarted == true {
+                
+                var pointOutOfShape: Bool = false
+                
                 let firstLevelRect = firstLevelShape.getCGRect()
                 
                 // Distinguishes 3 cases based on the finger position:
@@ -239,7 +242,7 @@ class Level1: UIViewController {
                     
                     // 2. At the center of the line
          
-                    if(middleLineX.contains(initialPoint.x) && middleLineY.contains(initialPoint.y)) {
+                    if (middleLineX.contains(initialPoint.x) && middleLineY.contains(initialPoint.y)) {
                         print("Inside the middle line")
                         oscillator.stop()
                         oscillator2.stop()
@@ -262,6 +265,34 @@ class Level1: UIViewController {
                     oscillator2.amplitude = 0.5
                     oscillator2.frequency = 200
                     oscillator2.start()
+                    
+                    // Two cases
+                    // Finger is outside the line and inside the second element: great! Level completed
+                    // Finger is outside the line but outside the second element: restart
+                    
+                    let firstElementMaxX = label1.frame.maxX
+                    let firstElementMinX = label1.frame.minX
+                    let firstElementMaxY = label1.frame.maxY
+                    let firstElementMinY = label1.frame.minY
+                    
+                    print(initialPoint.x)
+                    print(initialPoint.y)
+                    
+                    if (initialPoint.x >= firstElementMinX && initialPoint.x <= firstElementMaxX &&
+                        initialPoint.y >= firstElementMinY && initialPoint.y <= firstElementMaxY) {
+                        print("Last point is inside element")
+                        
+                        oscillatorMid.stop()
+                        oscillator.stop()
+                        oscillator2.stop()
+                        
+                        UIAccessibility.post(notification: .announcement, argument: "Level 1 completed")
+
+                    } else {
+                        print("Last point is outside element")
+                        
+                        startGame()
+                    }
                 }
             }
         }
