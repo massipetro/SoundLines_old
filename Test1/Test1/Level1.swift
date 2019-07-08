@@ -48,7 +48,7 @@ class Level1: UIViewController {
     
     var firstLevelShape: Shape!
     
-    var gameCanStart: Bool = false
+    var gameStarted: Bool = false
     
     var firstElementFound: Bool = false
     var secondElementFound: Bool = false
@@ -75,7 +75,7 @@ class Level1: UIViewController {
         // Tell the user to find the first element
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
-            UIAccessibility.post(notification: .announcement, argument: "Find the kitten")
+            UIAccessibility.post(notification: .announcement, argument: "Find the cat")
         })
     }
     
@@ -83,15 +83,7 @@ class Level1: UIViewController {
     // If tapped show second element and tell the user to find it
     // If the gameCanStart variable is true starts the panning detection
     
-    var firstElementTapCounter: Int = 0 {
-        didSet {
-            if (gameCanStart) {
-                gameCanStart = false
-                firstElementFound = true
-                startGame()
-            }
-        }
-    }
+    var firstElementTapCounter: Int = 0
     
     @objc func firstElementSelected(sender: UITapGestureRecognizer) {
 
@@ -105,25 +97,21 @@ class Level1: UIViewController {
         // else tell the user it is the first element
         
         if (firstElementTapCounter == 1) {
-            UIAccessibility.post(notification: .announcement, argument: "You found the kitten! Find the cat")
+            print("firstElement: first tap")
+            UIAccessibility.post(notification: .announcement, argument: "You found the cat! Find the kitten")
             
             // Show the second element
             
             label2.isHidden = false
         } else {
-            UIAccessibility.post(notification: .announcement, argument: "Kitten")
+            print("firstElement: tap")
+            UIAccessibility.post(notification: .announcement, argument: "Cat")
         }
     }
     
     // Detects tapping on the second element
     
-    var secondElementTapCounter: Int = 0{
-        didSet {
-            if (firstElementFound) {
-                print("Livello superato")
-            }
-        }
-    }
+    var secondElementTapCounter: Int = 0
     
     @objc func secondElementSelected(sender: UITapGestureRecognizer) {
         secondElementTapCounter = secondElementTapCounter + 1
@@ -136,18 +124,20 @@ class Level1: UIViewController {
         // else tell the user it is the second element
         
         if (secondElementTapCounter == 1) {
-            UIAccessibility.post(notification: .announcement, argument: "You found the cat! Now go back to the kitten and follow the line to connect it to the cat")
+            print("secondElement: first tap")
+            UIAccessibility.post(notification: .announcement, argument: "You found the kitten! Now connect it to the cat")
             
             // Create the line
             
             createLine()
             
-            // IMPORTANT: sets the start game variable true: now the didSet method for the firstElement
-            // will start the game
+            // Start the game
             
-            gameCanStart = true
+            gameStarted = true
+            startGame()
         } else {
-            UIAccessibility.post(notification: .announcement, argument: "Cat")
+            print("secondElement: tap")
+            UIAccessibility.post(notification: .announcement, argument: "Kitten")
         }
     
     }
