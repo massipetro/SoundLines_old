@@ -156,15 +156,15 @@ class Level1: UIViewController {
     
     func createLine() -> Void {
         
-        let firstElementMaxX = label1.frame.maxX
-        let secondElementMinX = label2.frame.minX
+        let firstElementMaxX = label1.frame.maxX + 10
+        let secondElementMinX = label2.frame.minX - 10
         
-        let shapeWidth: CGFloat = (secondElementMinX - 10) - (firstElementMaxX + 10)
+        let shapeWidth: CGFloat = secondElementMinX - firstElementMaxX
         let shapeHeight: CGFloat = label1.frame.height
         
         // Creates an accessibile rectangle shape
         
-        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX + 10,
+        firstLevelShape = Shape(frame: CGRect(x: firstElementMaxX,
                                               y: self.view.frame.size.height / 2 - shapeHeight / 2 - 25,
                                               width: shapeWidth,
                                               height: 75))
@@ -193,7 +193,7 @@ class Level1: UIViewController {
     
     // Detects panning on the shape and adds sonification based on the finger position
     
-    @IBAction func panDetector(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func panDetector(_ gestureRecognizer: UIPanGestureRecognizer) {
         print("panDetector")
         
         // Saves the point touched by the user
@@ -208,8 +208,6 @@ class Level1: UIViewController {
             print(initialPoint)
             
             if gameStarted == true {
-                
-                var pointOutOfShape: Bool = false
                 
                 let firstLevelRect = firstLevelShape.getCGRect()
                 
@@ -275,19 +273,12 @@ class Level1: UIViewController {
                     let firstElementMaxY = label1.frame.maxY
                     let firstElementMinY = label1.frame.minY
                     
-                    print(initialPoint.x)
-                    print(initialPoint.y)
-                    
                     if (initialPoint.x >= firstElementMinX && initialPoint.x <= firstElementMaxX &&
                         initialPoint.y >= firstElementMinY && initialPoint.y <= firstElementMaxY) {
                         print("Last point is inside element")
                         
-                        oscillatorMid.stop()
-                        oscillator.stop()
-                        oscillator2.stop()
-                        
                         UIAccessibility.post(notification: .announcement, argument: "Level 1 completed")
-
+                        
                     } else {
                         print("Last point is outside element")
                         
@@ -303,6 +294,6 @@ class Level1: UIViewController {
     func normalize(num: Double) -> Double {
         let min = Double(label1.frame.maxX + 10)
         let max = Double(label2.frame.minX - 10)
-        return 2*((num - min)/(max - min))-1
+        return 2 * ((num - min) / (max - min)) - 1
     }
 }
