@@ -43,6 +43,14 @@ class Level1: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            try! AudioKit.stop()
+        }
+    }
+    
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
     
@@ -199,60 +207,62 @@ class Level1: UIViewController {
         if gestureRecognizer.state != .cancelled {
             print(initialPoint)
             
-            let firstLevelRect = firstLevelShape.getCGRect()
-            
-            // Distinguishes 3 cases based on the finger position:
-            // 1. Inside the line but not in the center
-            // 2. At the center of the line
-            // 3. Outside the line
-            
-            // The finger is inside the line
-            
-            if (firstLevelRect.contains(initialPoint)) {
-                print("OK: point is inside shape")
+            if gameStarted == true {
+                let firstLevelRect = firstLevelShape.getCGRect()
                 
+                // Distinguishes 3 cases based on the finger position:
                 // 1. Inside the line but not in the center
-                
-                oscillatorMid.stop()
-                oscillator2.stop()
-                oscillator.baseFrequency = Double(initialPoint.y)
-                oscillator.amplitude = 1
-                oscillator.start()
-                
-                // Creates a sub-shape which indicates the line center
-                
-                let y = self.view.frame.size.height / 2 - label1.frame.height / 2 - 25 + 37.5
-                let minY = y - 5
-                let maxY = y + 5
-                
-                let middleLineX = label1.frame.maxX + 10..<label2.frame.minX - 10
-                let middleLineY = minY..<maxY
-                
                 // 2. At the center of the line
-     
-                if(middleLineX.contains(initialPoint.x) && middleLineY.contains(initialPoint.y)) {
-                    print("Inside the middle line")
-                    oscillator.stop()
-                    oscillator2.stop()
-
-                    panner.pan = normalize(num: Double(initialPoint.x))
-                    
-                    oscillatorMid.baseFrequency = 500
-                    oscillatorMid.start()
-                } else {
-                    panner.pan = 0.0
-                }
-                
-            } else {
                 // 3. Outside the line
                 
-                print("NO: point is outside shape")
+                // The finger is inside the line
                 
-                oscillatorMid.stop()
-                oscillator.stop()
-                oscillator2.amplitude = 0.5
-                oscillator2.frequency = 200
-                oscillator2.start()
+                if (firstLevelRect.contains(initialPoint)) {
+                    print("OK: point is inside shape")
+                    
+                    // 1. Inside the line but not in the center
+                    
+                    oscillatorMid.stop()
+                    oscillator2.stop()
+                    oscillator.baseFrequency = Double(initialPoint.y)
+                    oscillator.amplitude = 1
+                    oscillator.start()
+                    
+                    // Creates a sub-shape which indicates the line center
+                    
+                    let y = self.view.frame.size.height / 2 - label1.frame.height / 2 - 25 + 37.5
+                    let minY = y - 5
+                    let maxY = y + 5
+                    
+                    let middleLineX = label1.frame.maxX + 10..<label2.frame.minX - 10
+                    let middleLineY = minY..<maxY
+                    
+                    // 2. At the center of the line
+         
+                    if(middleLineX.contains(initialPoint.x) && middleLineY.contains(initialPoint.y)) {
+                        print("Inside the middle line")
+                        oscillator.stop()
+                        oscillator2.stop()
+
+                        panner.pan = normalize(num: Double(initialPoint.x))
+                        
+                        oscillatorMid.baseFrequency = 500
+                        oscillatorMid.start()
+                    } else {
+                        panner.pan = 0.0
+                    }
+                    
+                } else {
+                    // 3. Outside the line
+                    
+                    print("NO: point is outside shape")
+                    
+                    oscillatorMid.stop()
+                    oscillator.stop()
+                    oscillator2.amplitude = 0.5
+                    oscillator2.frequency = 200
+                    oscillator2.start()
+                }
             }
         }
     }
